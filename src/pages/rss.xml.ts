@@ -9,9 +9,9 @@ export async function GET(context: APIContext) {
   );
 
   return rss({
-    title: 'Astro Keel',
-    description: 'Notes, essays, and release logs from Astro Keel.',
-    site: context.site ?? 'https://example.com',
+    title: 'Trooper\'s Portfolio',
+    description: 'Trooper\'s projects, blog, and more.',
+    site: context.site ?? 'https://stormtrooper720.github.io',
     items: posts.map((post) => ({
       title: post.data.title,
       description: post.data.description,

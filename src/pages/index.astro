@@ -4,7 +4,7 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { withBase } from '../lib/url';
 
-const works = (await getCollection('works'))
+const works = (await getCollection('projects'))
   .sort((a, b) => {
     const byDate = b.data.publishDate.getTime() - a.data.publishDate.getTime();
     return byDate || (a.data.order ?? 999) - (b.data.order ?? 999);
@@ -25,49 +25,50 @@ const formatDate = (date: Date) =>
 ---
 
 <BaseLayout
-  title="Astro Keel"
+  title="Home"
   description="A minimal portfolio and writing theme for careful technical work."
 >
   <section class="hero section">
-    <p class="eyebrow">Portfolio / writing / systems notes</p>
-    <h1>Structural minimalism for careful digital work.</h1>
+    <p class="eyebrow">Projects / Blogs / Hobbies</p>
+    <h1>Inspired to Create</h1>
     <p class="lead">
-      Astro Keel gives projects, essays, and professional notes a disciplined frame:
-      editorial type, measured rhythm, and a single accent carried through fine structural
-      rules.
+      Here you can find my projects and blog as well my personal hobbies and interests.
+      Whether it's my custom quadcopter, a robot that plays Connect Four, posts about what I'm working on, and even photography, it's here.
     </p>
     <div class="action-row" aria-label="Primary links">
-      <a class="button" href={withBase('/works/')}>View works</a>
-      <a class="text-link" href={withBase('/blog/')}>Read notes</a>
+      <a class="button" href={withBase('/projects/')}>View Projects</a>
+      <a class="text-link" href={withBase('/blog/')}>Read Blog</a>
     </div>
   </section>
 
   <section class="section split-overview" aria-label="Theme overview">
     <div>
-      <p class="eyebrow">Principles</p>
-      <h2>Readable first, decorative last.</h2>
+      <p class="eyebrow">A short about me</p>
+      <h2>The one behind it all</h2>
+      <a class="button" href="/about">More about me</a>
     </div>
     <div class="feature-list">
       <article>
-        <h3>Baseline rhythm</h3>
-        <p>Vertical spacing follows a steady cadence for long-form reading.</p>
+        <h3>What I'm studying</h3>
+        <p>I'm an undergraduate student currently studying mechanical engineering. I'm also looking to pursue a minor in robotics engineering as well.</p>
       </article>
       <article>
-        <h3>Typed content</h3>
-        <p>Collections are prepared for project case studies and durable notes.</p>
+        <h3>Why I chose M.E.</h3>
+        <p>I chose mechanical engineering because I want to go into the field of robotics and mechatronics.
+          I want to design and make dynamic systems that utilize mechanical, electrical, and computational components. With my main focus being on mechanics.</p>
       </article>
       <article>
-        <h3>Keel lines</h3>
-        <p>Fine rules create structure without relying on decorative effects.</p>
+        <h3>What motivates me</h3>
+        <p>Ever since I got an LED to blink on its own, I've gotten satisfaction making something, over coming its challenges, and finally experiencing the result in front of me.</p>
       </article>
     </div>
   </section>
 
   <section class="section index-feed" aria-labelledby="latest-works">
     <div class="section-heading">
-      <p class="eyebrow">Latest works</p>
-      <h2 id="latest-works">Built records.</h2>
-      <a class="text-link" href={withBase('/works/')}>All works</a>
+      <p class="eyebrow">Latest Projects</p>
+      <h2 id="latest-works">Built to Learn</h2>
+      <a class="text-link" href={withBase('/projects/')}>All projects</a>
     </div>
 
     {
@@ -87,7 +88,7 @@ const formatDate = (date: Date) =>
               <div>
                 <p class="meta">{formatDate(work.data.publishDate)}</p>
                 <h3>
-                  <a href={withBase(`/works/${work.id}/`)}>{work.data.title}</a>
+                  <a href={withBase(`/projects/${work.id}/`)}>{work.data.title}</a>
                 </h3>
                 <p>{work.data.description}</p>
                 {work.data.tech.length > 0 && (
@@ -103,7 +104,7 @@ const formatDate = (date: Date) =>
         </div>
       ) : (
         <div class="empty-state compact">
-          <p>Add works under <code>src/content/works</code> to surface the latest projects here.</p>
+          <p>Add projects under <code>src/content/projects</code> to surface the latest projects here.</p>
         </div>
       )
     }
@@ -112,7 +113,7 @@ const formatDate = (date: Date) =>
   <section class="section index-feed" aria-labelledby="latest-notes">
     <div class="section-heading">
       <p class="eyebrow">Latest blog</p>
-      <h2 id="latest-notes">Field notes.</h2>
+      <h2 id="latest-notes">Behind the Scenes</h2>
       <a class="text-link" href={withBase('/blog/')}>All posts</a>
     </div>
 

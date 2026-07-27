@@ -15,9 +15,9 @@ interface Props {
   image?: string;
 }
 
-const siteName = 'Astro Keel';
+const siteName = 'Trooper\'s Portfolio';
 const defaultDescription =
-  'A minimal, neutral, and modern portfolio and blog theme for Astro.';
+  'Trooper\'s projects, blog, and more.';
 
 const {
   title = siteName,
@@ -36,7 +36,7 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/about/', label: 'About' },
-  { href: '/works/', label: 'Works' },
+  { href: '/projects/', label: 'Projects' },
   { href: '/blog/', label: 'Blog' },
 ];
 
@@ -84,7 +84,7 @@ const isActive = (href: string) => {
     <header class="site-header">
       <a class="brand" href={withBase('/')} aria-label="Astro Keel home">
         <span class="brand-mark" aria-hidden="true"></span>
-        <span>Astro Keel</span>
+        <span>Trooper's Portfolio</span>
       </a>
       <nav class="site-nav" aria-label="Main navigation">
         {
@@ -106,7 +106,7 @@ const isActive = (href: string) => {
 
     <footer class="site-footer">
       <p>Built with Astro Keel.</p>
-      <a href={withBase('/blog/')}>Notes</a>
+      <a href="https://github.com/StormTrooper720">My Github</a>
     </footer>
 
     <script>

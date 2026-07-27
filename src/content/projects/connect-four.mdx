@@ -1,0 +1,58 @@
+---
+title: "Connect Four Playing Robot"
+description: "A robot capable of playing Connect Four against an opponent. It uses a camera and custom algorithm running on a Raspberry Pi with parts harvested from a cheap laser engraver. Works, kind of."
+thumbnail: ./media/connect4robot/overall.jpg
+tech:
+  - Raspberry Pi
+  - Arduino
+  - CNC
+link: "https://example.com"
+repo: "https://github.com/StormTrooper720/connectfourrobot"
+order: 1
+publishDate: 2025-01-17
+---
+import { Image } from 'astro:assets';
+import final_design from './media/connect4robot/overall.jpg';
+import piece_dropper from './media/connect4robot/piece_dropper.png';
+import main_piece from './media/connect4robot/mainpart.jpg';
+
+# Quick Info
+This was my final project in my robotics class. We could choose what we wanted to work on as long as it was autonomous in some way. I had a thought about making a robot that can play a game and decided on Connect 4 since it would be simpler to play pieces. The class seemed to like this idea when I presented it so I went with it. It uses a Raspberry Pi Zero 2 W with the Raspberry Pi camera module to detect the board and the pieces to then use an "AI" to figure out the best move.
+
+## Research
+After deciding on a Connect 4 playing robot, I wanted to see if anyone else had done it. The first result was a robot built at MIT. MIT!? I was trying to make a robot MIT had made. This immediately put some pressure on me, I was trying to make something that a student at MIT built. I looked at the design and it gave me some ideas. A chute that holds the pieces, a horizontal shaft that it moves on, etc. are all good ideas.
+
+## Where to Start?
+After figuring out what to make, I had to get to work. As a start, I wanted to make the Connect 4 game within a terminal window. I got a basic "AI" implemented as well. The only difference between someone playing this in the terminal to the robot was that the initial board layout would be different. The robot does not detect where the player places a game coin, instead relying on the camera to detect where every piece is. Once the button on the robot is pressed, it takes a picture and recreates the game board in software. It then runs my Connect 4 program with an initial board and tells the "AI" where to play.
+
+## The Robot's Design
+Using inspiration from the MIT Connect 4 robot, The main part that holds the pieces and dispenses them works in a very similar way. I have a chute that stores pieces with a plate underneath that can move back and forth. When the plate moves back, a piece drops into a circular cutout, it then moves forward over a chute where the piece falls into the top of the board. This plate is moved by a servo with an arm and a thin metal rod.
+<Image class="article-image" src={piece_dropper} alt="The piece dropping mechanism CAD design"/>
+My design does not reflect this though. I use Onshape for most of my projects and my knowledge of it consists of what I learned in SolidWorks from an intro to engineering class. Designing this was difficult so I decided I would make modifications if needed after making these initial parts. There were a lot of modifications to my design.
+<Image class="article-image" src={main_piece} alt="The physical piece dropper with my modifications"/>
+After looking back at the MIT robot, I realized that the plate that drops one piece at a time spins on theirs instead of slides like mine. I was running out of time though so I couldn't redesign that part. This mechanism works about 80% of the time, with the other 20% being when it gets stuck. I also need to mention the frame that this moves on. Aluminum extrusions from a cheap Chinese laser engraver make up the frame. I would use the stepper motors and stepper motor driver board as well to move the main piece dropping part. Luckily the stepper motor driver board could be easily programmed with the Arduino IDE so I could write simple could that received a number and moved to the corresponding column on the Connect 4 board.
+
+## The Code
+I like the Rust programming language, it quickly became my favorite language so I wanted to use it for my robot. The [Connect 4 program](https://github.com/stormtrooper720/connectfour) I made uses Rust for game logic and all the code using the camera along with the game and "AI" uses Rust as well. The stepper motor driver board uses C++ though because it is basically an Arduino. 
+### The Main Logic
+My main [program (GitHub)](https://github.com/stormtrooper720/connectfourrobot) has one file that runs on startup on the Raspberry Pi. First, it uses the GPIO pins to detect when the button is pressed. It then takes a picture (by running a command 🤮) and analyzes it. Next, it sends that to the "AI" where it spits out a column number for the robot to place a piece. Finally, it sends that number to the driver board and the piece dropper moves over the correct column and drops a piece. When I first tested it, I ran into an issue. The issue was that the Rust USB serial library I was using didn't seem to work. I kept trying different baud rates and settings but the driver board wasn't moving the motor. Using my computer with the Arduino IDE serial monitor worked though. Time was still a constraint so I had to quickly improvise. I used three GPIO pins (plus ground) to communicate with the driver board. It was stupid but it worked on the first try. It works by sending the column number in binary. I treat each of the three wires as bits with every pin pulled low. With this, there were exactly enough bits for this to work. Binary 000 represented no move with 001 representing column one, 010 representing column two, and so on.
+### The Camera
+I didn't want to spend too much time on this so I did something simple, or at least I thought it was simple. I didn't use any tools to detect the board and find every piece's position. I hard-coded the pixel coordinates to every piece. This worked as long as the camera didn't move, but if it did, time to re-code every value.
+### The Driver Board
+With the mentioned fixes above, the driver board waits until at least one pin is pulled high to do anything. Once it sees that, it goes to the corresponding column rotates the servo shaft ~90 degrees, and back dropping a piece. It then moves back. The starting position is where the piece dropper hits the camera mount, this is how I home it, just make sure it hits the camera mount. Every column has a certain amount of motor steps that it takes to get there. This is how it knows how far to go.
+### The "AI"
+I put AI in quotes every time I used it for a reason. This is not real AI, but instead code that uses an algorithm to play. Given the same board, it will always play the same move. This is how I could always know its next move if I wanted to impress someone who plays it. The algorithm works by "dropping" a piece in every column and seeing where it gets a Connect 4 first. If it finds a Connect 4, it returns the column that results in a win. If it doesn't find a possible Connect 4, it finds where it can make its first three in a row, and returns the column number. After that, it just picks a random column.
+
+## The Problems
+While it (mostly) worked in the end, it had many problems. The camera, code, and hardware issues all had weird bugs.
+### The Camera (My Code)
+The main one was the camera, which was awful to get working. I guess I was part of the blame though. My program used predefined pixel coordinates to find the color and detect a piece or not. While this was simple after finding every pixel coordinate, the camera would always have moved at least a bit. If the picture was skewed by more than a few pixels, the piece recognition got weird and returned a board with impossible piece locations. This resulted in the "AI" thinking it would win if it played a certain spot not knowing the board the camera returned was wrong.
+### The Camera (Itself)
+Another problem was the fact the camera only worked half the time. When I run the camera command to take a picture, I often get an error saying that the camera failed to return data. Sometimes it worked, sometimes it didn't. It seemed to be a problem with the camera itself but it was too late to fix or replace it.
+### The Piece Dropper
+I already touched on this earlier but I want to elaborate more about it. The mechanism is not good. It gets stuck often and has to be manually fixed for it to work again. The sliding part is also permanently in the mechanism, melted plastic makes it so that the piece can't be removed. If I were to remake this project, this part would be my main priority to get working. The servomotor with the metal arm was also a weird choice. It was recommended to me by a friend since I didn't know what to do, and while it worked, it meant having to deal with more moving parts that would get stuck or break. The servo was also melted to the main part and was positioned where it worked best which meant more trial and error.
+
+## Final Result
+<Image class="article-image" src={final_design} alt="The finished design of the robot"/>
+It (mostly) works! Ignoring the weird issues, it was able to play somewhat decently. Almost everyone who played it won though. My "AI" wasn't that good, I wanted to experiment with machine learning to make a decent AI but I didn't have time. My robot did beat people who didn't know the game that well so I'll count that as a win. I turned this project in in May 2024. In November 2024 I was asked by my teacher to present this at the county's high school CTE fair to show off my school's program. I pulled the robot out and it still worked, except for one thing, the camera. It was only able to take a couple pictures before it broke, I don't know how it broke, it just gave me errors whenever I tried taking a picture. So during the event, I set it to play randomly. I wasn't happy with it but it still impressed a lot of people. I would like to make this better in the future, but for now, this is all!
+

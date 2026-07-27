@@ -25,7 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build with Astro
-        uses: withastro/action@v7
+        uses: withastro/action@v6
         # withastro/action installs deps, runs the build, and uploads ./dist
         # as the Pages artifact. `site`/`base` come from astro.config.mjs.
         #with:

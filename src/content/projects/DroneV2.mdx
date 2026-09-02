@@ -1,0 +1,114 @@
+---
+title: Drone V2
+description: "Drone Version 2 (2024-2025)"
+thumbnail: ./media/dronev2/regionals_frame_red.png
+tech:
+  - UAV
+  - Competition
+link: "https://example.com"
+repo: "https://gothardta.github.io/projects/dronev2"
+publishDate: 2025-07-30
+---
+import { Image } from 'astro:assets';
+import newdronedesign_regionals from './media/dronev2/newdronedesign_regionals.png';
+import newframe_regionals from './media/dronev2/newframe_regionals.png';
+import first_flight from './media/dronev2/first_flight.png';
+import itgoesup from './media/dronev2/itgoesup.png';
+import itgoesdown from './media/dronev2/itgoesdown.png';
+import drone_crash_1 from './media/dronev2/drone_crash_1.png';
+
+(This was written in 2025, my writing wasn't that good then. Sorry if this isn't well written, I'm working on a better page with more details and a more clearer process of what I did and learned.)
+# Quick Info
+This is the continuation of last year's [drone](/projects/dronev1/). This time, it's actually good (it's not finished yet). This is for the 2024–25 TSA competition. This year's goal is to be able to pick up little toy dinosaurs or caged dinosaurs. The more you can pick up and transport, the more points you get. The drone flying and picking up the payloads is worth 60 out of the 180 total points. Once again, documentation is two-thirds of your score. This page is still a work in progress as this year's drone is still in progress, but so far it's already better than last year's. I recommend at least skimming over the [page](/projects/dronev1/) for last year's drone to get a better understanding of this year's.
+
+# So What Changed?
+A lot! The entire design has changed and so have the parts! I have a goal to model every part, at least to the right size so that I know everything will fit.
+<Image class="article-image" src={newdronedesign_regionals} alt=""/>
+
+## New Design Choices
+Last year's frame had some problems… Detachable arms? A wire cover? A claw that required servomotors to be melted to the frame? This was awful. To be fair though, I had only taken an Intro to Engineering class that only briefly went over SolidWorks. I didn't know how to make to best design decisions for an engineering project. I did learn a lot last year though and have taken many ideas into a new design. I did this from scratch because I realized the old frame had a lot of weird design choices and I didn't like how I made it. I also prioritized making sure everything fit right. No more melting and drilling holes into the frame, it just works. This also means I have a lot of frames printed that only have minor differences, but I think this is better.
+
+## The Main Frame
+The new frame is one piece, no more melting arms onto the square base. It's also smaller, only 6.87 inches (174.5 mm) across and 9.23 inches (234.5 mm) diagonal. I can be printed on almost every 3D printer in one piece. The holes for the motors have also been changed so that the wires point toward the center. I also added quite a few holes to be able to add expansions to the base frame. I have ideas for a propeller guard, but some of these holes are currently used for zip ties and other pieces of the whole frame. I also moves the onboard flight controller to the top of the board so that I can make the battery cage smaller.
+<Image class="article-image" src={newframe_regionals} alt=""/>
+
+## The Battery Cage
+I still kept the battery cage because it makes it easy to attach a claw to the bottom. Inside the cage is room for the battery as well as the receiver. The design only looks different from last year's but still has the same purpose.
+
+## The Claw
+We still need a claw and I quite like the design I made last year. This time I tried to make it better suited for picking up toy dinosaurs by their head. I don't think I did a good job though. This is still very much a work in progress. I also added a mount for the servomotors so that they aren't just melted to the frame this time.
+
+## New and Changed Parts
+There are only a few parts we kept from last year's drone. Last year's drone was big and had big parts. I don't want big parts, I want a smaller drone. We have smaller motors, batteries, and ESCs. The motors are 2300KV and are smaller than our previous motors. The battery is now a 1500mAh 3S lipo. And all four ESCs were replaced by a 4 in 1 ESC. Sadly, since this is being constructed and tested after March 2024, we will need a remote ID transmitter. I want to make the drone light enough (&lt;250 grams) to not need it, but I don't know if that will happen ☹️.
+
+# Does It Work?
+It does! It still needs some configuring, but it already works.
+
+## An Important Consideration
+There are many regulations when it comes to flying drones. Our drone has to comply with FAA regulations or we could get fined. Remote ID is now required for drones weighing over 250 grams (ours is around 500 grams) so our drone does have a remote ID module. The airspace our drone was flown in allowed drone flight with no restrictions, but always check with your local authority. We have followed all safety and FAA regulations when flying our drone. I am not a legal expert, nothing I say is legal advice. I take no liability or responsibility for the actions you do. Always check with a lawyer or your local authority to get a complete understanding of if what you're doing is legal.
+
+## Test Flights
+So far we have done two test flights. The first was successful showing off that the new parts work and that it can fly. (The person recording had an old iPhone so the quality is awful)
+<Image class="article-image" src={first_flight} alt=""/>
+This flight only went a couple of feet off the ground, but it still flew and was stable. We have done one other flight since then and it was both successful and unfortunate. The person controlling the drone this time full throttled the motors and turned it to the right.
+<Image class="article-image" src={itgoesup} alt=""/>
+<Image class="article-image" src={itgoesdown} alt=""/>
+The drone hit the brick pillar in front of my school and crashed. Luckily only the frame broke so we only had to print a new one.
+<Image class="article-image" src={drone_crash_1} alt=""/>
+
+# Final Parts List
+So far, here are the parts used for this drone
+- ReadyToSky 2300KV motors (4x)
+	- Higher speed
+	- Works good with our 3S lipo
+- SpeedyBee F405 V4 & 55A 4in1 ESC
+	- Betaflight has so many configuration options for this
+	- We can configure the ESCs as well and the ESC board is the same size as the flight control board
+- FrSky X8R 8-16 Channel Receiver (might be discontinued)
+	- Had no problems, we used SBUS to receive our signal
+- FrSky X9D transmitter (Discontinued)
+	- OpenTX configurator was very annoying, or maybe that's because you can only find info about the pro version of this transmitter. This is the non pro version
+- 12g Servos (2x)
+	- Used for the claw
+	- I had to hook these directly to the X8R receiver module
+- 5 Inch tri Propellers (4x)
+	- They worked
+- Ruko R111 FAA compliant remote id module
+	- Required to be FAA compliant ☹️
+- Tenergy Lipo battery charger
+	- Any lipo battery charger works
+	- I chose this one so that we can charge other batteries for other projects as well
+- 3D Printer with PLA or ABS plastic
+
+# The Competitions
+My team and I have done the regional competition and the state competition for TSA.
+
+## How It Works
+The competition itself is quite simple. It is based on a points system, documentation is worth 80 points, the actual competition is 60 points, and if you semifinal, the interview is 40 points. You get this score after the competition is completely over, so you don't know if you placed until the awards ceremony. Or if you got another placement until the week after when they post the results and scores. Every year they change it slightly. For example, last year we were picking up plastic loops and small balls, but this year we had to pick up toy dinosaurs. You can think of this competition in terms of steps in a process outlined below.
+### Step 1
+You position your drone at the starting square, then turn the drone on after a judges approval. The judge will start a 10 minute timer. At anytime when the timer goes off, you must stop your current task and land back in the starting square. You can also choose to end the competition at anytime with no point penalty. If you get caught in the net, you are not allowed to get it out without asking a judge for help (this is for safety I think). If you ask a judge for help you get a point deduction if the timer is still going. 
+### Step 2
+You must pick a path to fly through, each path is different and gives different amounts of points. Once you pick a path you can start flying through it, but you can't leave it to do the other path partway through. The paths consist of different PVC tube obstacles you must fly through. If you hit any obstacles, you lose points. You can skip any obstacle, but you won't receive points for that specific obstacle. You want to fly through as many obstacles as possible to get the most points, but you also don't want to hit any.
+### Step 3
+Once you finish the obstacle course you can proceed to pick up a toy dinosaur, look into covered areas for hidden dinosaurs, or go back. If you don't look for a hidden dinosaur or pick one up, you don't receive any points. Once you pick one, you go back to the start. You don't have to go back through the obstacles, they won't give extra points if you do.
+#### Hidden Dinosaurs
+You don't pick up the hidden ones, but instead make sure an onboard camera can see it. The judges will also have a camera viewer to verify the hidden dinosaur. Each hidden dinosaur found gives points.
+#### Picking up Dinosaurs
+Once you pick up a toy dinosaur with the drone, you can fly back to the start and drop it in a tray.
+
+### Step 4
+If you haven't picked up all the dinosaurs or found all the hidden dinosaurs, you repeat steps 2 through 4, assuming you still have time left.
+
+## The Regional Competition
+Our drone was flying by this competition but the solder joint for the negative battery connector came off. It was destined to break, the ESC board has a big heat sink on it that instantly cools solder as soon as it touches it. This shows the board can handle the heat of the ESCs but also means it's hard to solder to. Because of this stupid issue, we couldn't fly the drone. We were still confident that our documentation could pull us through, but it didn't. The judge had never judged the drone competition so he didn't fully understand what to do. Only one other team's drone flew (even though they didn't put the net down and it almost hit someone four times) and so the judge said that only one team would place. Only that team got an award and 2nd and 3rd place didn't get anything. We later found out that we got 5th place, but I don't agree with that. For the state competition, these issues will be fixed and I hope to get top three. (Knock on wood)
+
+## The State Competition
+There is a lot to say about the state competition, but I will try to not ramble too much. Coordination is an important thing, if I group of people that want to do the same thing just do how they think they should, it will be a mess. If everyone coordinates to achieve the same thing they all want to do, it can be done more efficiently and quicker. If I were to rate the TSA state competition's coordination on a tier list, it would be C tier coordination. It wasn't completely a mess for the majority of events, but some (including the drone competition) weren't well coordinated. But before I talk about why this was a problem, let me first say how the actual competition went.
+### The Documentation
+The documentation is worth 80 points, the majority of the competition. The judges look at the documentation before we fly and judge different sections based on some guidelines. The sections are the component portfolio, photo log, wiring diagram, programming explanation/description, engineered drawings, bill of materials, drone flight regulations, and work logs. We got a score of 56/80 points.
+### Flying the Drone
+We signed up to go first, but ended up going third because our batteries quickly died during test flights the day of the competition and we had to recharge them. Once that was done we had our drone safety inspected (it passed) and then we started flying it. We were able to go through the obstacles only having to skip a couple so we don't hit them since they were a little difficult for our drone piloting abilities. We tried picking up a toy dinosaur but had some problems. This problem was faced by almost every team. Once you got near the toy, it would often slide away from the wind. We tried for a little bit but decided to skip picking up a dinosaur for the rest of the competition. Our drone also doesn't have a camera so we couldn't look for hidden dinosaurs. We got about halfway through the time when our drone got caught in the net. We saw that the battery was nearly dead and we wouldn't have time to replace it since the timer would keep going (and our design made it hard to replace the battery). We called for ending the time and then asked for a judge to help with the net. This allowed us to not get a point deduction from the net since we ended the time before asking. We got a score of 25/60 points, 8th for the flying part of the competition. Not the best, but since there were only 10 teams and our documentation was
+### The Interview
+This is where the coordination starts falling apart. The previous year, the interviews were held the next day and you would sign up for a time the night before, once you know if you semifinal. This year they changed it without a warning. The TSA state competition event coordinators post a schedule with every event, event interview time slots, and semifinal competition times (not every competition has this). There were no times for drone interviews but there was a sign up list with times for the next day. We signed up and the next day we went to the room, but there was nothing there. No judges or drone net from the previous day. We talked to the event coordinators and they didn't know anything about this. It turns out that the interviews were the previous day and took place at 4:00pm after everyone flew their drone. This wasn't on their schedule and they didn't no what to do. We left thinking that we wouldn't get an interview and any extra points from it. We told one of our school TSA advisors and they were annoyed. But luckily, thanks to her, there was one judge still at the event center that offered to do an interview. And she got it figured out with the event coordinators so that the interview score from this would count. If it weren't for her, we wouldn't have gotten this interview. The interview was scored in three sections, knowledge (20 points), articulation (10 points), and team participation (10 points). From the interview, we got 37/40 points. I am still so glad that we were able to get an interview. Thanks to the advisors from my school.
+### The Result
+We got a total score of 118/180 points giving us a placement of not top three. The report we get back doesn't give us a total placement, only a placement for flying the drone, which we got 8th. We were hopeful to get top three but we didn't. Next year though, it will happen, I'm hopeful it will.
